@@ -1,0 +1,1776 @@
+<!doctype html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <title>Energy projects under the Chinese-Pakistan Economic Corridor (CPEC)</title>
+      <meta name="description" content="Energy projects under the Chinese-Pakistan Economic Corridor (CPEC)">
+      <meta name="author" content="Julia Janicki">
+      <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+      <link href="https://fonts.googleapis.com/css2?family=Enriqueta:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700&display=swap" rel="stylesheet">
+      <script src='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js'></script>
+      <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css' rel='stylesheet' />
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+      <style>
+      body {
+        margin: 0;
+        padding: 0;
+        color: #0C1B34;
+        font-family: 'Work Sans', serif;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+      h1 {
+        font-size: 17px;
+        line-height: 25px;
+      }
+      h2 {
+        font-size: 15px;
+        line-height: 20px;
+        margin-bottom: 10px;
+      }
+      a {
+        text-decoration: none;
+        color: #2dc4b2;
+      }
+      .subtitle{
+        font-size:14px;
+      }
+      #console {
+        position: absolute;
+        width: 300px;
+        margin: 10px;
+        padding: 10px 20px 10px 30px;
+        background-color: #F0F0F1;
+        border-radius: 5px;
+        z-index: 15;
+        transition: 0.3s ease-in-out;
+        box-shadow: 0 1px 1px 0 rgba(66, 66, 66, 0.08), 0 1px 3px 1px rgba(66, 66, 66, 0.16);
+      }
+      .active{
+        transform:translate3d(-280px,0,0);
+        transition: 0.3s ease-in-out;
+      }
+
+      .itemWrapper{
+        margin-top: -20px;
+      }
+
+      #toggleConsole{
+        position:absolute;
+        right:5px;
+        top:0px;
+      }
+      #toggleConsole img{
+        width:16px;
+        opacity: 0.7;
+      }
+      #toggleConsole img:hover{
+        opacity: 0.5;
+        transition: all .5s ease;
+        cursor:pointer;
+      }
+      .toggle {
+        position: relative;
+        height: 14px;
+        width: 35px;
+        border-radius: 15px;
+        background: #cfcfcf;
+        margin: 8px 0;
+      }
+      .toggle input {
+        opacity: 0;
+        width: 100%;
+        height: 200%;
+        position: absolute;
+        top: -7px;
+        left: 0;
+        z-index: 2;
+        margin: 0
+      }
+      .toggle input:nth-child(2):checked {
+        z-index: 1;
+      }
+      .toggle__pointer {
+        position: absolute;
+        top: -3.5px;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #D66951;
+        -webkit-transition: left .15s ease-out;
+        transition: left .15s ease-out;
+      }
+      .toggle input:nth-child(2):checked + .toggle__pointer {
+        left: 18px;
+        background-color: #777777;
+      }
+
+      .toggleWind {
+        position: relative;
+        height: 14px;
+        width: 35px;
+        border-radius: 15px;
+        background: #cfcfcf;
+        margin: 8px 0;
+      }
+      .toggleWind input {
+        opacity: 0;
+        width: 100%;
+        height: 200%;
+        position: absolute;
+        top: -7px;
+        left: 0;
+        z-index: 2;
+        margin: 0
+      }
+      .toggleWind input:nth-child(2):checked {
+        z-index: 1;
+      }
+      .toggleWind__pointer {
+        position: absolute;
+        top: -3.5px;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #189B68;
+        -webkit-transition: left .15s ease-out;
+        transition: left .15s ease-out;
+      }
+      .toggleWind input:nth-child(2):checked + .toggleWind__pointer {
+        left: 18px;
+        background-color: #777777;
+      }
+
+      .toggleHydro {
+        position: relative;
+        height: 14px;
+        width: 35px;
+        border-radius: 15px;
+        background: #cfcfcf;
+        margin: 8px 0;
+      }
+      .toggleHydro input {
+        opacity: 0;
+        width: 100%;
+        height: 200%;
+        position: absolute;
+        top: -7px;
+        left: 0;
+        z-index: 2;
+        margin: 0
+      }
+      .toggleHydro input:nth-child(2):checked {
+        z-index: 1;
+      }
+      .toggleHydro__pointer {
+        position: absolute;
+        top: -3.5px;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #09979C;
+        -webkit-transition: left .15s ease-out;
+        transition: left .15s ease-out;
+      }
+      .toggleHydro input:nth-child(2):checked + .toggleHydro__pointer {
+        left: 18px;
+        background-color: #777777;
+      }
+
+      .toggleSolar {
+        position: relative;
+        height: 14px;
+        width: 35px;
+        border-radius: 15px;
+        background: #cfcfcf;
+        margin: 8px 0;
+      }
+      .toggleSolar input {
+        opacity: 0;
+        width: 100%;
+        height: 200%;
+        position: absolute;
+        top: -7px;
+        left: 0;
+        z-index: 2;
+        margin: 0
+      }
+      .toggleSolar input:nth-child(2):checked {
+        z-index: 1;
+      }
+      .toggleSolar__pointer {
+        position: absolute;
+        top: -3.5px;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #FFC554;
+        -webkit-transition: left .15s ease-out;
+        transition: left .15s ease-out;
+      }
+      .toggleSolar input:nth-child(2):checked + .toggleSolar__pointer {
+        left: 18px;
+        background-color: #777777;
+      }
+
+      .flip{
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        opacity: 1;
+      }
+      #console h1,
+      #console h2 {
+        text-align: left;
+      }
+      .verticalLine {
+        margin-right: 5px;
+        border-right: 0.3px solid #ECE8E1;
+      }
+
+      #title {
+        font-family: 'Enriqueta', serif;
+        color: #0c1b34;
+        font-weight: 700;
+        margin-left: -10px;
+        margin-bottom: 15px;
+      }
+      #title a{
+        color:#0c1b34;
+      }
+      #title a:hover{
+        color: #D66951;
+        transition: all 1s ease;
+        text-decoration: underline !important;
+      }
+      .mapboxgl-popup {
+        max-width: 300px !important;
+        font-family: 'Work Sans', sans-serif;
+        text-align: left;
+        z-index: 20;
+      }
+      .mapboxgl-popup-content {
+        font-family: 'Work Sans', sans-serif;
+        padding: 0;
+      }
+      .mapboxgl-popup-content-wrapper {
+        padding: 1%;
+      }
+      .mapboxgl-popup-content h3 {
+        text-align: left;
+        font-size:16px;
+        margin: 0;
+        display: block;
+        padding: 15px;
+        font-weight: 700;
+        margin-top: -5px;
+      }
+      .mapboxgl-popup.coal h3 {
+        background: #D66951 !important;
+        color: #fff;
+      }
+      .mapboxgl-popup.wind h3 {
+        background: #189B68 !important;
+        color: #fff;
+      }
+      .mapboxgl-popup.hydro h3 {
+        background: #09979C !important;
+        color: #fff;
+      }
+      .mapboxgl-popup.solar h3 {
+        background: #FFC554 !important;
+        color: #fff;
+      }
+      .mapboxgl-popup-content h4 {
+        margin: 0;
+        display: block;
+        font-size:14px;
+        padding: 10px 3px 10px 10px;
+        font-weight: 400;
+      }
+      .mapboxgl-container {
+        cursor: pointer;
+      }
+      .mapboxgl-popup-anchor-top>.mapboxgl-popup-content {
+        margin-top: 3px;
+      }
+      .mapboxgl-popup-anchor-top>.mapboxgl-popup-tip {
+        border-bottom-color: rgb(61, 59, 59);
+      }
+      .mapboxgl-popup-close-button{
+        transform:scale(2);
+        color:white;
+        padding:0px;
+        margin-right: 10px;
+      }
+      .mapboxgl-popup-close-button:hover,.mapboxgl-popup-close-button:active,.mapboxgl-popup-close-button:target{
+        background:none !important;
+        border: none !important;
+        outline: none!important;
+        color:#cfcfcf;
+        transition: all 0.5s ease;
+      }
+      .filters{
+        margin-top: 20px;
+      }
+      .legend.label{
+        display:inline;
+      }
+      .legend img{
+        width:10px;
+        height:10px;
+        display:inline;
+      }
+      .label{
+        color:black;
+        font-size:12px;
+        font-weight:400;
+      }
+      .instruction{
+        margin-left: -15px;
+        margin-top:20px;
+      }
+      .instruction p{
+        color:#4159A8;
+        font-weight: 700;
+        font-size:12px;
+      }
+      .button {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 1.5;
+        text-transform: uppercase;
+        background-color: none;
+        max-width: 200px;
+        text-align: center;
+        -webkit-transition: all .5s ease;
+        -moz-transition: all .5s ease;
+        -ms-transition: all .5s ease;
+        transition: all .5s ease;
+        padding: 10px;
+      }
+      .button.coal{
+        color: #D66951;
+        border: 1.5px solid  #D66951;
+      }
+      .button.wind{
+        color: #189B68;
+        border: 1.5px solid  #189B68;
+      }
+      .button.hydro{
+        color: #09979C;
+        border: 1.5px solid  #09979C;
+      }
+      .button.solar{
+        color: #FFC554;
+        border: 1.5px solid  #FFC554;
+      }
+      .button.coal a{
+        color: #D66951;
+      }
+      .button.wind a{
+        color: #189B68;
+      }
+      .button.hydro a{
+        color: #09979C;
+      }
+      .button.solar a{
+        color: #FFC554;
+      }
+      .button:hover {
+        cursor: pointer;
+        -webkit-transition: all .5s ease;
+        -moz-transition: all .5s ease;
+        -ms-transition: all .5s ease;
+        transition: all .5s ease;
+      }
+      a:hover{
+        text-decoration: none !important;
+      }
+      .item{
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+      .item2{
+        display: inline-block;
+        margin-left: 8px;
+        font-size: 12px;
+      }
+      .item3{
+        display: inline-block;
+        margin-left: 6px;
+        font-size: 12px;
+        width:20px;
+        height:20px;
+      }
+      .popupTitle{
+        font-family: 'Enriqueta', serif;
+      }
+      .mapboxgl-popup-anchor-top>.mapboxgl-popup-tip {
+      /* border-bottom-color: rgb(61, 59, 59); */
+      }
+      #loading {
+      top: 0;
+      left: 0;
+      position: fixed;
+      display: block;
+      opacity: .7;
+      background-color: #fff;
+      z-index: 99;
+      }
+      #loading-image {
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: calc(50vh - 80px);
+      z-index: 100;
+      }
+      #loading{
+      width: 100%;
+      text-align: center;
+      height: 100%;
+      }
+
+      #minCircle{
+        width: 13px;
+        height: 13px;
+      }
+
+      #maxCircle{
+        width: 55px;
+        height: 55px;
+      }
+
+      #legendInstruction p:hover{
+        cursor:pointer;
+        opacity: 0.7;
+        transition: all .4s ease;
+      }
+      #logo{
+        position: absolute;
+        bottom:22px;
+        right:0px;
+        z-index:5;
+      }
+      #logo img{
+        width:120px;
+      }
+      @media screen and (max-width: 800px) {
+
+        #console {
+          width: 250px;
+        }
+        .active{
+          transform:translate3d(-230px,0,0);
+        }
+        .label{
+          font-size:10px;
+          margin-left:-5px;
+        }
+        .item2{
+          font-size:10px;
+          margin-left:2px;
+        }
+        h1{
+          font-size:16px;
+        }
+        h2{
+          font-size:12px;
+        }
+        #console{
+          padding: 10px 20px;
+        }
+        #title{
+          margin-top:-10px;
+        }
+        .mapboxgl-popup {
+          max-width: 250px !important;
+        }
+        #legendCol1{
+          margin-left: -10px !important;
+        }
+        #legendCol2{
+          margin-left: -20px !important;
+        }
+      }
+      @media screen and (max-width: 600px) {
+        body{
+        font-size:11px !important;
+        }
+        #title{
+          font-size:13px;
+        }
+        .subtitle{
+          font-size:12px;
+        }
+        .active{
+        transform:translate3d(-230px,0,0);
+        }
+        .label{
+        font-size:10px;
+        margin-left:-5px;
+        }
+        .item2{
+        font-size:9px;
+        margin-left:1px;
+        }
+        .item3{
+          width: 15px;
+          height: 15px;
+        }
+        .legendTitleAll{
+          margin-top: -5px;
+        }
+        #sliderControls{
+          margin-top: -10px;
+        }
+        h1{
+        font-size:14px;
+        }
+        h2{
+        font-size:12px;
+        }
+        .instruction p{
+          font-size:10px;
+        }
+        #legendCol1{
+        margin-left: -10px !important;
+        }
+        #legendCol2{
+        margin-left: -20px !important;
+        }
+        .mapboxgl-popup{
+           transform:none !important;
+           top: 20px;
+           left: 0;
+           right: 0;
+           margin-left: auto;
+           margin-right: auto;
+       }
+       .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-center .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-left .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-right .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip,
+       .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip{
+           display:none !important;
+       }
+       #logo{
+         position: absolute;
+         bottom:15px;
+         right:0px;
+       }
+       #logo img{
+         width:100px;
+       }
+      }
+      </style>
+   </head>
+   <body>
+      <div id='map'></div>
+      <div id='logo'>
+        <img src="./img/logo.png"/>
+      </div>
+      <div id='console'>
+         <div class="verticalLine">
+            <span id="toggleConsole">
+            <img src="./img/toggle.png" />
+            </span>
+            <h1 id='title'>Energy projects under the Chinese-Pakistan Economic Corridor (CPEC)</h1>
+            <div class='row itemWrapper'>
+               <h2 class="subtitle"> Energy type </h2>
+            </div>
+            <div class="itemWrapper">
+              <div class='row toggle item filters' id="coalFilter">
+                 <input id='' type="radio" value="coalOn" name="toggle" checked='checked'>
+                 <input id='' type="radio" value="coalOff" name="toggle">
+                 <div class="toggle__pointer"></div>
+              </div>
+              <div class="item">
+                 <h2 id="coal">Coal</h2>
+              </div>
+            </div>
+            <div class="itemWrapper">
+               <div class='row toggleWind item filters' id="windFilter">
+                  <input id='' type="radio" value="windOn" name="toggleWind" checked='checked'>
+                  <input id='' type="radio" value="windOff" name="toggleWind">
+                  <div class="toggleWind__pointer"></div>
+               </div>
+               <div class="item">
+                  <h2 id="wind">Wind</h2>
+               </div>
+            </div>
+            <div class="itemWrapper">
+               <div class='row toggleHydro item filters' id="hydroFilter">
+                  <input id='' type="radio" value="hydroOn" name="toggleHydro" checked='checked'>
+                  <input id='' type="radio" value="hydroOff" name="toggleHydro">
+                  <div class="toggleHydro__pointer"></div>
+               </div>
+               <div class="item">
+                  <h2 id="hydro">Hydro</h2>
+               </div>
+            </div>
+            <div class="itemWrapper">
+               <div class='row toggleSolar item filters' id="solarFilter">
+                  <input id='' type="radio" value="solarOn" name="toggleSolar" checked='checked'>
+                  <input id='' type="radio" value="solarOff" name="toggleSolar">
+                  <div class="toggleSolar__pointer"></div>
+               </div>
+               <div class="item">
+                  <h2 id="solar">Solar</h2>
+               </div>
+            </div>
+            <div class='row itemWrapper'>
+               <h2 class="subtitle"> Size of power plant </h2>
+               <div class="">
+                  <img id="minCircle" class='item2' src="./img/legend4.svg" /img>
+                  <p id="minCircleVal" class='item2'></p>
+                  <img id="maxCircle" class='item2' src="./img/legend4.svg" /img>
+                  <p id="maxCircleVal" class='item2'></p>
+               </div>
+            </div>
+            <div class="instruction itemWrapper" id="instruction">
+               <p class="item">Click on the circles for more information</p>
+            </div>
+         </div>
+         <!-- end line -->
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.14.2/d3.js"></script>
+      <script>
+
+      var windowWidth = $(window).width();
+     var windowHeight = $(window).height();
+     var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+     var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+     var mobile = false;
+     var iphone = false;
+     var safari = false;
+
+     $(window).resize(function() {
+         if (windowWidth != $(window).width() || windowHeight != $(window).height()) {
+             location.reload();
+             return;
+         }
+     });
+
+     if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || viewportWidth<600) {
+         mobile = true;
+     }
+
+     //console.log(mobile);
+
+     if (/iPhone/i.test(navigator.userAgent)) {
+         iphone = true;
+     }else{
+       //console.log(/iPhone/i.test(navigator.userAgent))
+     }
+
+     //if Safari
+     var ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf('safari') != -1) {
+        if (ua.indexOf('chrome') > -1) { // Chrome
+        } else {// Safari
+          safari = true;
+        }
+      }
+
+      if(viewportWidth<700){
+          $("#instruction").css("display","none");
+       }else{
+          $("#instruction").css("display","inherit");
+       }
+
+      var legendShow = false;
+
+      mapboxgl.accessToken = 'pk.eyJ1IjoidGhldGhpcmRwb2xlIiwiYSI6ImNLSWVDcWsifQ.vVx5f1hjIvHBeSpaY3NUkQ';
+
+      var map;
+      var geoJsonData = {
+      'type': 'FeatureCollection',
+      'features': [
+        ]
+      };
+
+      var coalData =   {
+      'type': 'FeatureCollection',
+      'features': [
+        ]
+      };
+
+      var windData =   {
+      'type': 'FeatureCollection',
+      'features': [
+        ]
+      };
+
+      var hydroData =  {
+      'type': 'FeatureCollection',
+      'features': [
+        ]
+      };
+
+      var solarData =  {
+      'type': 'FeatureCollection',
+      'features': [
+        ]
+      };
+
+
+      var filterCoal = ['==', ['string', ['get', 'energy_type']], 'Coal'];
+      var filterWind = ['==', ['string', ['get', 'energy_type']], 'Wind'];
+      var filterHydro = ['==', ['string', ['get', 'energy_type']], 'Hydro'];
+      var filterSolar = ['==', ['string', ['get', 'energy_type']], 'Solar'];
+
+      var min=1;
+      var max=1;
+      var minCircleSize = 5;
+      var maxCircleSize = 30;
+
+      if(mobile){
+
+        map = new mapboxgl.Map({
+           container: 'map', // container element id
+           style: 'mapbox://styles/thethirdpole/ckdpz2qxd0p2p1illi3gqjxuk',
+           center: [69.199753,29.269182], // initial map center in [lon, lat]
+           zoom: 4,
+           minZoom:3
+       });
+
+      }else{
+
+        map = new mapboxgl.Map({
+           container: 'map', // container element id
+           style: 'mapbox://styles/thethirdpole/ckdpz2qxd0p2p1illi3gqjxuk',
+           center: [69.199753,29.269182], // initial map center in [lon, lat]
+           zoom: 5,
+           minZoom:2
+       });
+
+      }
+
+
+      var consoleHeight = $("#console").height()/2;
+      $("#toggleConsole").css("top",consoleHeight);
+
+
+      map.on('load', function() {
+
+          init(); // test google sheet
+          $("#toggleConsole").click(function(){
+            $("#console").toggleClass("active");
+            $("#toggleConsole img").toggleClass("flip");
+          });
+
+
+      });
+
+      if(!mobile){
+        map.addControl(new mapboxgl.NavigationControl());
+      }
+
+
+
+      function init() {
+      Tabletop.init({
+        key: 'https://docs.google.com/spreadsheets/d/13IvK73RCQhJWI852i9IeJHmnefMVS36A5AI-AFGxqws/edit?usp=sharing',
+        callback: onDataLoad,
+        simpleSheet: true
+      });
+      }
+
+
+      function onDataLoad(data) {
+
+        $('#loading').hide();
+
+        data.forEach(function (row) {
+
+          var lat;
+          var lon;
+
+          if(row.Longitude=='null'){
+            //console.log(row)
+            lon = null;
+            lat = null;
+          }else{
+            lon = +row.Longitude;
+            lat = +row.Latitude;
+          }
+          // to deal with null lat lon values
+
+          if(row.Capacity ==''){
+
+          }else{
+            if(+row.Capacity<min){
+              min=+row.Capacity;
+            }
+            if(+row.Capacity>max){
+              max=+row.Capacity;
+            }
+          }
+
+          console.log(min);
+          console.log(max);
+
+
+          var feature =
+          {
+            'type': 'Feature',
+            'properties': {
+              'longitude': lon,
+              'latitude': lat,
+              'data_source': row.Data_source,
+              'project_name':row.Project_name,
+              'energy_type': row.Energy_type,
+              'status':row.Status,
+              'completion_year':+row.Completion_year,
+              'capacity':+row.Capacity,
+              'province':row.Province,
+              'developer':row.Developer,
+              'project_cost':+row.Project_cost,
+              'link':row.Link
+            },
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [+row.Latitude, +row.Longitude],
+            }
+          };
+
+          if(row.Energy_type=='Coal'){
+            console.log(row)
+            coalData['features'].push(feature);
+          }
+
+          if(row.Energy_type=='Wind'){
+            windData['features'].push(feature);
+          }
+
+          if(row.Energy_type=='Hydro'){
+            hydroData['features'].push(feature);
+          }
+
+          if(row.Energy_type=='Solar'){
+            solarData['features'].push(feature);
+          }
+
+          geoJsonData['features'].push(feature);
+
+        });
+
+        map.addLayer({
+            id: 'coalLayer',
+            type: 'circle',
+            source: {
+                type: 'geojson',
+                data: coalData
+            },
+            paint: {
+              "circle-color": [
+                "case",
+                ["==", ["get", "energy_type"], 'Coal'],
+                "#D66951",
+                ["==", ["get", "energy_type"], 'Wind'],
+                "#189B68",
+                ["==", ["get", "energy_type"], 'Hydro'],
+                '#09979C',
+                "#FFC554"
+              ],
+                'circle-radius': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'capacity'],
+                  min,
+                  minCircleSize,
+                  max,
+                  maxCircleSize
+                ],
+                'circle-opacity': 0.7
+            }
+        });
+
+
+        map.addLayer({
+            id: 'windLayer',
+            type: 'circle',
+            source: {
+                type: 'geojson',
+                data: windData
+            },
+            paint: {
+              "circle-color": [
+                "case",
+                ["==", ["get", "energy_type"], 'Coal'],
+                "#D66951",
+                ["==", ["get", "energy_type"], 'Wind'],
+                "#189B68",
+                ["==", ["get", "energy_type"], 'Hydro'],
+                '#09979C',
+                "#FFC554"
+              ],
+                'circle-radius': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'capacity'],
+                  min,
+                  minCircleSize,
+                  max,
+                  maxCircleSize
+                ],
+                'circle-opacity': 0.7
+            }
+        });
+
+
+        map.addLayer({
+            id: 'hydroLayer',
+            type: 'circle',
+            source: {
+                type: 'geojson',
+                data: hydroData
+            },
+            paint: {
+              "circle-color": [
+                "case",
+                ["==", ["get", "energy_type"], 'Coal'],
+                "#D66951",
+                ["==", ["get", "energy_type"], 'Wind'],
+                "#189B68",
+                ["==", ["get", "energy_type"], 'Hydro'],
+                '#09979C',
+                "#FFC554"
+              ],
+                'circle-radius': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'capacity'],
+                  min,
+                  minCircleSize,
+                  max,
+                  maxCircleSize
+                ],
+                'circle-opacity': 0.7
+            }
+        });
+
+        map.addLayer({
+            id: 'solarLayer',
+            type: 'circle',
+            source: {
+                type: 'geojson',
+                data: solarData
+            },
+            paint: {
+              "circle-color": [
+                "case",
+                ["==", ["get", "energy_type"], 'Coal'],
+                "#D66951",
+                ["==", ["get", "energy_type"], 'Wind'],
+                "#189B68",
+                ["==", ["get", "energy_type"], 'Hydro'],
+                '#09979C',
+                "#FFC554"
+              ],
+                'circle-radius': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'capacity'],
+                  min,
+                  minCircleSize,
+                  max,
+                  maxCircleSize
+                ],
+                'circle-opacity': 0.7
+            }
+        });
+
+        $("#minCircleVal").html(`${min} MW`);
+        $("#maxCircleVal").html(`${max} MW`);
+
+
+        document.getElementById('coalFilter').addEventListener('change', function(e) {
+
+          // update the map filter
+          if (e.target.value === 'coalOn') {
+             filterCoal = ['==', ['string', ['get', 'energy_type']], 'Coal'];
+          } else {
+             filterCoal = ['!=', ['string', ['get', 'energy_type']], 'Coal'];
+          }
+           map.setFilter('coalLayer', filterCoal);
+
+        });
+
+        document.getElementById('windFilter').addEventListener('change', function(e) {
+
+          // update the map filter
+          if (e.target.value === 'windOn') {
+             filterWind = ['==', ['string', ['get', 'energy_type']], 'Wind'];
+          } else {
+             filterWind = ['!=', ['string', ['get', 'energy_type']], 'Wind'];
+          }
+           map.setFilter('windLayer', filterWind);
+
+        });
+
+        document.getElementById('hydroFilter').addEventListener('change', function(e) {
+
+          // update the map filter
+          if (e.target.value === 'hydroOn') {
+             filterHydro = ['==', ['string', ['get', 'energy_type']], 'Hydro'];
+          } else {
+             filterHydro = ['!=', ['string', ['get', 'energy_type']], 'Hydro'];
+          }
+           map.setFilter('hydroLayer', filterHydro);
+
+        });
+
+        document.getElementById('solarFilter').addEventListener('change', function(e) {
+
+          // update the map filter
+          if (e.target.value === 'solarOn') {
+             filterSolar = ['==', ['string', ['get', 'energy_type']], 'Solar'];
+          } else {
+             filterSolar = ['!=', ['string', ['get', 'energy_type']], 'Solar'];
+          }
+           map.setFilter('solarLayer', filterSolar);
+
+        });
+
+
+
+        map.on('mouseenter', 'coalLayer', function(e) {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+
+        map.on('mouseleave', 'coalLayer', function() {
+            map.getCanvas().style.cursor = '';
+            // popup.remove();
+        });
+
+        map.on('mouseenter', 'windLayer', function(e) {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+
+        map.on('mouseleave', 'windLayer', function() {
+            map.getCanvas().style.cursor = '';
+            // popup.remove();
+        });
+
+        map.on('mouseenter', 'hydroLayer', function(e) {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+
+        map.on('mouseleave', 'hydroLayer', function() {
+            map.getCanvas().style.cursor = '';
+            // popup.remove();
+        });
+
+        map.on('mouseenter', 'solarLayer', function(e) {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+
+        map.on('mouseleave', 'solarLayer', function() {
+            map.getCanvas().style.cursor = '';
+            // popup.remove();
+        });
+
+
+        map.on('click', 'coalLayer', function(e) {
+          map.getCanvas().style.cursor = 'pointer';
+          var latitude = e.features[0].properties.latitude;
+          var longitude = e.features[0].properties.longitude;
+          var data_source = e.features[0].properties.data_source;
+          var project_name = e.features[0].properties.project_name;
+          var energy_type = e.features[0].properties.energy_type;
+          var status = e.features[0].properties.status;
+          var completion_year = e.features[0].properties.completion_year;
+          var capacity = e.features[0].properties.capacity;
+          var province = e.features[0].properties.province;
+          var developer = e.features[0].properties.developer;
+          var project_cost = e.features[0].properties.project_cost;
+          var link = e.features[0].properties.link;
+
+
+          // Ensure that if the map is zoomed out such that multiple
+          // copies of the feature are visible, the popup appears
+          // over the copy being pointed to.
+          while (Math.abs(e.lngLat.lng - latitude) > 180) {
+              latitude += e.lngLat.lng > latitude ? 360 : -360;
+          }
+
+          // Populate the popup and set its coordinates
+          // based on the feature found.
+          // create a variable for your popup for the current event
+
+          var popupClass="coal";
+
+          if(completion_year===null || completion_year === "" || completion_year === 0){
+            completion_year = 'Not Available';
+          }
+
+
+
+          var projectWUnit = project_cost;
+
+          if(project_cost >= 1000000 && project_cost < 1000000000){
+            projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+          }else if(project_cost >= 1000000000){
+            projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+          }else{
+            projectWUnit = `$${project_cost} USD`
+          }
+
+          if(project_cost === 0){
+            projectWUnit = 'Not Available';
+          }
+
+
+          if(link === undefined || link === null || link === ""){
+
+              popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+                  .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+                  + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+                  + '<h4><b> Status: </b>' + status + '</h4>'
+                  + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+                  + '<h4><b> Province: </b>' + province + '</h4>'
+                  + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+                  + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+                  .setLngLat([latitude,longitude])
+                  .addTo(map);
+
+          }else{
+
+            popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+                .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+                + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+                + '<h4><b> Status: </b>' + status + '</h4>'
+                + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+                + '<h4><b> Province: </b>' + province + '</h4>'
+                + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+                + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+                + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+                .setLngLat([latitude,longitude])
+                .addTo(map);
+
+          }
+
+            $(`.button.${popupClass}`).hover(function(){
+              console.log("hover")
+              $(".button a").css("color","white");
+              $(this).css("background-color","#D66951");
+             },function(){
+               $(".button a").css("color","#D66951");
+               $(this).css("background-color","white");
+             });
+             $(".mapboxgl-popup-tip").css("border-bottom-color","#D66951");
+
+
+       });
+
+
+       map.on('click', 'windLayer', function(e) {
+         map.getCanvas().style.cursor = 'pointer';
+         var latitude = e.features[0].properties.latitude;
+         var longitude = e.features[0].properties.longitude;
+         var data_source = e.features[0].properties.data_source;
+         var project_name = e.features[0].properties.project_name;
+         var energy_type = e.features[0].properties.energy_type;
+         var status = e.features[0].properties.status;
+         var completion_year = e.features[0].properties.completion_year;
+         var capacity = e.features[0].properties.capacity;
+         var province = e.features[0].properties.province;
+         var developer = e.features[0].properties.developer;
+         var project_cost = e.features[0].properties.project_cost;
+         var link = e.features[0].properties.link;
+
+         while (Math.abs(e.lngLat.lng - latitude) > 180) {
+             latitude += e.lngLat.lng > latitude ? 360 : -360;
+         }
+
+         var popupClass="wind";
+
+         if(completion_year===null || completion_year === "" || completion_year === 0){
+           completion_year = 'Not Available';
+         }
+
+         var projectWUnit = project_cost;
+
+         if(project_cost >= 1000000 && project_cost < 1000000000){
+           projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+         }else if(project_cost >= 1000000000){
+           projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+         }else{
+           projectWUnit = `$${project_cost} USD`
+         }
+
+         if(project_cost === 0){
+           projectWUnit = 'Not Available';
+         }
+
+
+         if(link === undefined || link === null || link === ""){
+
+             popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+                 .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+                 + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+                 + '<h4><b> Status: </b>' + status + '</h4>'
+                 + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+                 + '<h4><b> Province: </b>' + province + '</h4>'
+                 + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+                 + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+                 .setLngLat([latitude,longitude])
+                 .addTo(map);
+
+         }else{
+
+           popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+               .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+               + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+               + '<h4><b> Status: </b>' + status + '</h4>'
+               + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+               + '<h4><b> Province: </b>' + province + '</h4>'
+               + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+               + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+               + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+               .setLngLat([latitude,longitude])
+               .addTo(map);
+
+         }
+
+
+           $(`.button.${popupClass}`).hover(function(){
+             $(".button a").css("color","white");
+             $(this).css("background-color","#189B68");
+            },function(){
+              $(".button a").css("color","#189B68");
+              $(this).css("background-color","white");
+            });
+            $(".mapboxgl-popup-tip").css("border-bottom-color","#189B68");
+
+      });
+
+
+      map.on('click', 'hydroLayer', function(e) {
+        map.getCanvas().style.cursor = 'pointer';
+        var latitude = e.features[0].properties.latitude;
+        var longitude = e.features[0].properties.longitude;
+        var data_source = e.features[0].properties.data_source;
+        var project_name = e.features[0].properties.project_name;
+        var energy_type = e.features[0].properties.energy_type;
+        var status = e.features[0].properties.status;
+        var completion_year = e.features[0].properties.completion_year;
+        var capacity = e.features[0].properties.capacity;
+        var province = e.features[0].properties.province;
+        var developer = e.features[0].properties.developer;
+        var project_cost = e.features[0].properties.project_cost;
+        var link = e.features[0].properties.link;
+
+        while (Math.abs(e.lngLat.lng - latitude) > 180) {
+            latitude += e.lngLat.lng > latitude ? 360 : -360;
+        }
+
+        var popupClass="hydro";
+
+        if(completion_year===null || completion_year === "" || completion_year === 0){
+          completion_year = 'Not Available';
+        }
+
+        var projectWUnit = project_cost;
+
+        if(project_cost >= 1000000 && project_cost < 1000000000){
+          projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+        }else if(project_cost >= 1000000000){
+          projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+        }else{
+          projectWUnit = `$${project_cost} USD`
+        }
+
+        if(project_cost === 0){
+          projectWUnit = 'Not Available';
+        }
+
+
+        if(link === undefined || link === null || link === ""){
+
+            popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+                .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+                + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+                + '<h4><b> Status: </b>' + status + '</h4>'
+                + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+                + '<h4><b> Province: </b>' + province + '</h4>'
+                + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+                + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+                .setLngLat([latitude,longitude])
+                .addTo(map);
+
+        }else{
+
+          popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+              .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+              + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+              + '<h4><b> Status: </b>' + status + '</h4>'
+              + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+              + '<h4><b> Province: </b>' + province + '</h4>'
+              + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+              + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+              + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+              .setLngLat([latitude,longitude])
+              .addTo(map);
+
+        }
+
+
+          $(`.button.${popupClass}`).hover(function(){
+            $(".button a").css("color","white");
+            $(this).css("background-color","#09979C");
+           },function(){
+             $(".button a").css("color","#09979C");
+             $(this).css("background-color","white");
+           });
+           $(".mapboxgl-popup-tip").css("border-bottom-color","#09979C");
+
+     });
+
+
+
+     map.on('click', 'solarLayer', function(e) {
+       map.getCanvas().style.cursor = 'pointer';
+       var latitude = e.features[0].properties.latitude;
+       var longitude = e.features[0].properties.longitude;
+       var data_source = e.features[0].properties.data_source;
+       var project_name = e.features[0].properties.project_name;
+       var energy_type = e.features[0].properties.energy_type;
+       var status = e.features[0].properties.status;
+       var completion_year = e.features[0].properties.completion_year;
+       var capacity = e.features[0].properties.capacity;
+       var province = e.features[0].properties.province;
+       var developer = e.features[0].properties.developer;
+       var project_cost = e.features[0].properties.project_cost;
+       var link = e.features[0].properties.link;
+
+       while (Math.abs(e.lngLat.lng - latitude) > 180) {
+           latitude += e.lngLat.lng > latitude ? 360 : -360;
+       }
+
+       var popupClass="solar";
+
+       if(completion_year===null || completion_year === "" || completion_year === 0){
+         completion_year = 'Not Available';
+       }
+
+       var projectWUnit = project_cost;
+
+       if(project_cost >= 1000000 && project_cost < 1000000000){
+         projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+       }else if(project_cost >= 1000000000){
+         projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+       }else{
+         projectWUnit = `$${project_cost} USD`
+       }
+
+       if(project_cost === 0){
+         projectWUnit = 'Not Available';
+       }
+
+       if(link === undefined || link === null || link === ""){
+
+           popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+               .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+               + '<h4><b> Capacity: </b>' + capacity + '(MW)</h4>'
+               + '<h4><b> Status: </b>' + status + '</h4>'
+               + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+               + '<h4><b> Province: </b>' + province + '</h4>'
+               + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+               + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+               .setLngLat([latitude,longitude])
+               .addTo(map);
+
+       }else{
+
+         popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+             .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+             + '<h4><b> Capacity: </b>' + capacity + '(MW)</h4>'
+             + '<h4><b> Status: </b>' + status + '</h4>'
+             + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+             + '<h4><b> Province: </b>' + province + '</h4>'
+             + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+             + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+             + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+             .setLngLat([latitude,longitude])
+             .addTo(map);
+
+       }
+
+
+         $(`.button.${popupClass}`).hover(function(){
+           $(".button a").css("color","white");
+           $(this).css("background-color","#FFC554");
+          },function(){
+            $(".button a").css("color","#FFC554");
+            $(this).css("background-color","white");
+          });
+          $(".mapboxgl-popup-tip").css("border-bottom-color","#FFC554");
+
+    });
+
+
+    //mobile
+    map.on('touchstart', 'coalLayer', function(e) {
+      map.getCanvas().style.cursor = 'pointer';
+      var latitude = e.features[0].properties.latitude;
+      var longitude = e.features[0].properties.longitude;
+      var data_source = e.features[0].properties.data_source;
+      var project_name = e.features[0].properties.project_name;
+      var energy_type = e.features[0].properties.energy_type;
+      var status = e.features[0].properties.status;
+      var completion_year = e.features[0].properties.completion_year;
+      var capacity = e.features[0].properties.capacity;
+      var province = e.features[0].properties.province;
+      var developer = e.features[0].properties.developer;
+      var project_cost = e.features[0].properties.project_cost;
+      var link = e.features[0].properties.link;
+
+      while (Math.abs(e.lngLat.lng - latitude) > 180) {
+          latitude += e.lngLat.lng > latitude ? 360 : -360;
+      }
+
+      var popupClass="coal";
+
+      if(completion_year===null || completion_year === "" || completion_year === 0){
+        completion_year = 'Not Available';
+      }
+
+      var projectWUnit = project_cost;
+
+      if(project_cost >= 1000000 && project_cost < 1000000000){
+        projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+      }else if(project_cost >= 1000000000){
+        projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+      }else{
+        projectWUnit = `$${project_cost} USD`
+      }
+
+      if(project_cost === 0){
+        projectWUnit = 'Not Available';
+      }
+
+      if(link === undefined || link === null || link === ""){
+
+          popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+              .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+              + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+              + '<h4><b> Status: </b>' + status + '</h4>'
+              + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+              + '<h4><b> Province: </b>' + province + '</h4>'
+              + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+              + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+              .setLngLat([latitude,longitude])
+              .addTo(map);
+
+      }else{
+
+        popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+            .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+            + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+            + '<h4><b> Status: </b>' + status + '</h4>'
+            + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+            + '<h4><b> Province: </b>' + province + '</h4>'
+            + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+            + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+            + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+            .setLngLat([latitude,longitude])
+            .addTo(map);
+
+      }
+
+        $(`.button.${popupClass}`).hover(function(){
+          console.log("hover")
+          $(".button a").css("color","white");
+          $(this).css("background-color","#D66951");
+         },function(){
+           $(".button a").css("color","#D66951");
+           $(this).css("background-color","white");
+         });
+         $(".mapboxgl-popup-tip").css("border-bottom-color","#D66951");
+
+
+   });
+
+
+   map.on('touchstart', 'windLayer', function(e) {
+     map.getCanvas().style.cursor = 'pointer';
+     var latitude = e.features[0].properties.latitude;
+     var longitude = e.features[0].properties.longitude;
+     var data_source = e.features[0].properties.data_source;
+     var project_name = e.features[0].properties.project_name;
+     var energy_type = e.features[0].properties.energy_type;
+     var status = e.features[0].properties.status;
+     var completion_year = e.features[0].properties.completion_year;
+     var capacity = e.features[0].properties.capacity;
+     var province = e.features[0].properties.province;
+     var developer = e.features[0].properties.developer;
+     var project_cost = e.features[0].properties.project_cost;
+     var link = e.features[0].properties.link;
+
+     while (Math.abs(e.lngLat.lng - latitude) > 180) {
+         latitude += e.lngLat.lng > latitude ? 360 : -360;
+     }
+
+     var popupClass="wind";
+
+     if(completion_year===null || completion_year === "" || completion_year === 0){
+       completion_year = 'Not Available';
+     }
+
+     var projectWUnit = project_cost;
+
+     if(project_cost >= 1000000 && project_cost < 1000000000){
+       projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+     }else if(project_cost >= 1000000000){
+       projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+     }else{
+       projectWUnit = `$${project_cost} USD`
+     }
+
+     if(project_cost === 0){
+       projectWUnit = 'Not Available';
+     }
+
+
+     if(link === undefined || link === null || link === ""){
+
+         popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+             .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+             + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+             + '<h4><b> Status: </b>' + status + '</h4>'
+             + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+             + '<h4><b> Province: </b>' + province + '</h4>'
+             + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+             + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+             .setLngLat([latitude,longitude])
+             .addTo(map);
+
+     }else{
+
+       popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+           .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+           + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+           + '<h4><b> Status: </b>' + status + '</h4>'
+           + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+           + '<h4><b> Province: </b>' + province + '</h4>'
+           + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+           + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+           + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+           .setLngLat([latitude,longitude])
+           .addTo(map);
+
+     }
+
+
+       $(`.button.${popupClass}`).hover(function(){
+         $(".button a").css("color","white");
+         $(this).css("background-color","#189B68");
+        },function(){
+          $(".button a").css("color","#189B68");
+          $(this).css("background-color","white");
+        });
+        $(".mapboxgl-popup-tip").css("border-bottom-color","#189B68");
+
+  });
+
+
+  map.on('touchstart', 'hydroLayer', function(e) {
+    map.getCanvas().style.cursor = 'pointer';
+    var latitude = e.features[0].properties.latitude;
+    var longitude = e.features[0].properties.longitude;
+    var data_source = e.features[0].properties.data_source;
+    var project_name = e.features[0].properties.project_name;
+    var energy_type = e.features[0].properties.energy_type;
+    var status = e.features[0].properties.status;
+    var completion_year = e.features[0].properties.completion_year;
+    var capacity = e.features[0].properties.capacity;
+    var province = e.features[0].properties.province;
+    var developer = e.features[0].properties.developer;
+    var project_cost = e.features[0].properties.project_cost;
+    var link = e.features[0].properties.link;
+
+    while (Math.abs(e.lngLat.lng - latitude) > 180) {
+        latitude += e.lngLat.lng > latitude ? 360 : -360;
+    }
+
+    var popupClass="hydro";
+
+    if(completion_year===null || completion_year === "" || completion_year === 0){
+      completion_year = 'Not Available';
+    }
+
+    var projectWUnit = project_cost;
+
+    if(project_cost >= 1000000 && project_cost < 1000000000){
+      projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+    }else if(project_cost >= 1000000000){
+      projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+    }else{
+      projectWUnit = `$${project_cost} USD`
+    }
+
+    if(project_cost === 0){
+      projectWUnit = 'Not Available';
+    }
+
+
+    if(link === undefined || link === null || link === ""){
+
+        popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+            .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+            + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+            + '<h4><b> Status: </b>' + status + '</h4>'
+            + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+            + '<h4><b> Province: </b>' + province + '</h4>'
+            + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+            + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+            .setLngLat([latitude,longitude])
+            .addTo(map);
+
+    }else{
+
+      popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+          .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+          + '<h4><b> Capacity: </b>' + capacity + ' (MW)</h4>'
+          + '<h4><b> Status: </b>' + status + '</h4>'
+          + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+          + '<h4><b> Province: </b>' + province + '</h4>'
+          + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+          + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+          + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+          .setLngLat([latitude,longitude])
+          .addTo(map);
+
+    }
+
+
+      $(`.button.${popupClass}`).hover(function(){
+        $(".button a").css("color","white");
+        $(this).css("background-color","#09979C");
+       },function(){
+         $(".button a").css("color","#09979C");
+         $(this).css("background-color","white");
+       });
+       $(".mapboxgl-popup-tip").css("border-bottom-color","#09979C");
+
+ });
+
+
+
+ map.on('touchstart', 'solarLayer', function(e) {
+   map.getCanvas().style.cursor = 'pointer';
+   var latitude = e.features[0].properties.latitude;
+   var longitude = e.features[0].properties.longitude;
+   var data_source = e.features[0].properties.data_source;
+   var project_name = e.features[0].properties.project_name;
+   var energy_type = e.features[0].properties.energy_type;
+   var status = e.features[0].properties.status;
+   var completion_year = e.features[0].properties.completion_year;
+   var capacity = e.features[0].properties.capacity;
+   var province = e.features[0].properties.province;
+   var developer = e.features[0].properties.developer;
+   var project_cost = e.features[0].properties.project_cost;
+   var link = e.features[0].properties.link;
+
+   while (Math.abs(e.lngLat.lng - latitude) > 180) {
+       latitude += e.lngLat.lng > latitude ? 360 : -360;
+   }
+
+   var popupClass="solar";
+
+   if(completion_year===null || completion_year === "" || completion_year === 0){
+     completion_year = 'Not Available';
+   }
+
+   var projectWUnit = project_cost;
+
+   if(project_cost >= 1000000 && project_cost < 1000000000){
+     projectWUnit = `$${(project_cost/1000000).toFixed(2)} million USD`
+   }else if(project_cost >= 1000000000){
+     projectWUnit = `$${(project_cost/1000000000).toFixed(2)} billion USD`
+   }else{
+     projectWUnit = `$${project_cost} USD`
+   }
+
+   if(project_cost === 0){
+     projectWUnit = 'Not Available';
+   }
+
+   if(link === undefined || link === null || link === ""){
+
+       popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+           .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+           + '<h4><b> Capacity: </b>' + capacity + '(MW)</h4>'
+           + '<h4><b> Status: </b>' + status + '</h4>'
+           + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+           + '<h4><b> Province: </b>' + province + '</h4>'
+           + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+           + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>')
+           .setLngLat([latitude,longitude])
+           .addTo(map);
+
+   }else{
+
+     popup = new mapboxgl.Popup({closeButton: true, closeOnClick: true, className:popupClass})
+         .setHTML('<h3 class="popupTitle">' + project_name + '</h3>'
+         + '<h4><b> Capacity: </b>' + capacity + '(MW)</h4>'
+         + '<h4><b> Status: </b>' + status + '</h4>'
+         + '<h4><b> Completion Date: </b>' + completion_year + '</h4>'
+         + '<h4><b> Province: </b>' + province + '</h4>'
+         + '<h4><b> Sponsor / Developer: </b>' + developer + '</h4>'
+         + '<h4><b> Project Cost: </b>' + projectWUnit+'</h4>'
+         + `<div class="button ${popupClass}"><a target="_blank" href="${link}">Read More</a></div>`)
+         .setLngLat([latitude,longitude])
+         .addTo(map);
+
+   }
+
+
+     $(`.button.${popupClass}`).hover(function(){
+       $(".button a").css("color","white");
+       $(this).css("background-color","#FFC554");
+      },function(){
+        $(".button a").css("color","#FFC554");
+        $(this).css("background-color","white");
+      });
+      $(".mapboxgl-popup-tip").css("border-bottom-color","#FFC554");
+
+});
+
+}
+
+       </script>
+    </body>
+    <div id="loading">
+       <img id="loading-image" src="./img/load.gif" alt="Loading..." />
+    </div>
+ </html>
